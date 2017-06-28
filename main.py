@@ -32,8 +32,8 @@ def main(username, password, team, repo_name):
         result = json.loads(result.text)
 
         if status_code == 200:
-            if "type" in result:
-                response["error"] = result["error"]
+            if "error" in result:
+                response["error"] = result["error"]["message"]
             else:
                 response["type"] = "success"
                 response["data"] = result
@@ -43,7 +43,7 @@ def main(username, password, team, repo_name):
         response["error"] = {
             "message": "Failed to connect."
         }
-    except Exception as err:
+    except Exception, err:
         response["error"] = {
             "message": str(err)
         }
