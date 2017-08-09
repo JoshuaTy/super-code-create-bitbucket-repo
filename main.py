@@ -9,6 +9,7 @@ def main(username, password, team, repo_name):
     """ Create a new repository. """
 
     response = {
+        "code": 400,
         "type": "error"
     }
 
@@ -39,11 +40,15 @@ def main(username, password, team, repo_name):
                 response["data"] = result
         else:
             response["error"] = result["error"]["message"]
+
+        response["code"] = status_code
     except requests.exceptions.HTTPError as err:
+        response["code"] = 500
         response["error"] = {
             "message": "Failed to connect."
         }
     except Exception, err:
+        response["code"] = 500
         response["error"] = {
             "message": str(err)
         }
